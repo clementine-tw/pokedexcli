@@ -1,0 +1,16 @@
+package main
+
+import (
+	"fmt"
+)
+
+func commandHelp() error {
+	fmt.Print(`Welcome to the Pokedex!
+Usage:
+
+`)
+	for key, command := range getCommands() {
+		fmt.Printf("%v: %v\n", key, command.description)
+	}
+	return nil
+}

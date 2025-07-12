@@ -1,2 +1,5 @@
 # build
 pokedexcli
+
+# logs
+*.log
