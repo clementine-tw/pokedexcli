@@ -5,9 +5,17 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/clementine-tw/pokedexcli/internal/pokeapi"
 )
 
-func startRepl() {
+type config struct {
+	pokeapiClient    pokeapi.Client
+	nextLocationsURL *string
+	prevLocationsURL *string
+}
+
+func startRepl(cfg *config) {
 
 	cliCommands := getCommands()
 
@@ -26,7 +34,7 @@ func startRepl() {
 			fmt.Println("Unknown command")
 			continue
 		}
-		command.callback()
+		command.callback(cfg)
 	}
 
 }
@@ -40,7 +48,7 @@ func cleanInput(text string) []string {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func(cfg *config) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -54,6 +62,16 @@ func getCommands() map[string]cliCommand {
 			name:        "Help",
 			description: "Print the usage of commands",
 			callback:    commandHelp,
+		},
+		"map": {
+			name:        "Map",
+			description: "Print next 20 locations",
+			callback:    commandMapf,
+		},
+		"mapb": {
+			name:        "Mapb",
+			description: "Print previous 20 locations",
+			callback:    commandMapb,
 		},
 	}
 }
