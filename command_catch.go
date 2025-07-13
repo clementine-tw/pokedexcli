@@ -3,9 +3,10 @@ package main
 import (
 	"errors"
 	"fmt"
-	"math"
 	"math/rand"
 )
+
+const successThres int = 40
 
 func commandCatch(cfg *config, args ...string) error {
 	if len(args) == 0 {
@@ -19,15 +20,8 @@ func commandCatch(cfg *config, args ...string) error {
 		return err
 	}
 
-	logExp := math.Log(float64(pokemon.BaseExperience))
-	chance := 100.0
-	if logExp != 0.0 {
-		chance = 100.0 * (1.0 / logExp)
-	}
-	dice := rand.Intn(10000)
-	successThres := int(math.Round(chance * 100))
+	dice := rand.Intn(pokemon.BaseExperience)
 
-	fmt.Printf("thres: %v\ndice : %v\n", successThres, dice)
 	if dice < successThres {
 		fmt.Printf("%v was caught!\n", name)
 		cfg.pokedex[name] = pokemon
